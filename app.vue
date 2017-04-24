@@ -1,67 +1,38 @@
-<style lang="scss">
-  .frame {
-    border-bottom: 3px solid #eee;
-    padding: 20px;
-    text-align: center;
-  }
-</style>
+<style lang='scss'>
 
-<template>
+</style>
+<template lang='html'>
+  
   <div>
-    <div class="frame">
-      <p>total = {{total}}</p>
-      <button @click="increment" v-text="counter"></button>
-      <button @click="increment2" v-text="counter2"></button>
-    </div>
-    <div class="frame">
-      <input id="MIKE" v-model="MIKE" value="mike" type="checkbox">
-      <label for="MIKE">mike</label>
-      <input type="checkbox" v-model="MIKE" value="anna"> anna
-      <p>{{MIKE}} 가 체크됨</p>
-    </div>
-    <div class="frame">
-      <input type="text" v-model="comment">
-      <p>{{comment}}</p>
-    </div>
-    <div class="frame">
-      <li v-for="(item,index) in items">{{item.text}}{{index}}</li>
-    </div>
-    <div class="frame">
-    </div>
+  
+    <input type="text" v-model="input" @keydown.enter="addTodo" />
+    <button @click="addTodo">Add TODO</button>
+    <ul>
+      <li v-for="todo in todos" v-text="todo.text" @click="toggleTodo(todo)"></li>
+    </ul>
+  
   </div>
 
-  
 </template>
-
 <script>
-
-  export default {
-    props: ['title'],
-    data() {
-      return {
-        counter: 0,
-        counter2: 0,
-        MIKE: [],
-        comment: '',
-        items: [
-          {text: "google"},
-          {text: "naver"}
-        ]
-      }
+export default {
+  data() {
+    return {
+      input: '',
+      todos: [],
+    }
+  },
+  methods: {
+    addTodo() {
+      this.todos.push({
+        text: this.input,
+        isDone: false,
+      });
+      this.input = '';
     },
-    computed: {
-      total() {
-        return this.counter + this.counter2;
-      } 
-    },
-    methods: {
-      increment() {
-        this.counter += 1
-      },
-      increment2() {
-        this.counter2 += 1
-      }
+    toggleTodo(todo) {
+      todo.isDone = !todo.isDone;
     }
   }
-  
+}
 </script>
