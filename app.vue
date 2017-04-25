@@ -2,36 +2,40 @@
 
 </style>
 <template lang='html'>
-  
   <div>
-  
-    <input type="text" v-model="input" @keydown.enter="addTodo" />
-    <button @click="addTodo">Add TODO</button>
+    <input placeholder="what is focus in today" v-model="input" type="text">
+    <button @click="add">ADD</button>
     <ul>
-      <li v-for="todo in todos" v-text="todo.text" @click="toggleTodo(todo)"></li>
+      <li :style="{ textDecoration: item.do ? 'line-through' : 'none' }" @click="toggleDo(item)" v-for="item in items">{{item.text}}</li>
     </ul>
-  
+    <p>TOTAL: {{total}}</p>
+    <p>SUCCESS: {{total - isDone}}</p>
   </div>
-
 </template>
 <script>
 export default {
   data() {
     return {
       input: '',
-      todos: [],
+      items: []
+
     }
   },
   methods: {
-    addTodo() {
-      this.todos.push({
-        text: this.input,
-        isDone: false,
-      });
+    add() {
+      this.items.push({text: this.input, do: false});
       this.input = '';
     },
-    toggleTodo(todo) {
-      todo.isDone = !todo.isDone;
+    toggleDo(item) {
+      item.do = !item.do
+    }
+  },
+  computed: {
+    total() {
+      return this.items.length.toString();
+    },
+    isDone() {
+      return this.items.filter(s => s.do).length;
     }
   }
 }
